@@ -27,24 +27,22 @@ $active = 0;
 $expired = 0;
 $expiring = 0;
 
-$today = new DateTime();
+$today = new DateTime(date("Y-m-d"));
 
 while ($row = $result->fetch_assoc()) {
+    if (empty($row["expiry_date"])) {
+        continue;
+    }
 
     $expiry = new DateTime($row["expiry_date"]);
+    $difference = $today->diff($expiry);
+    $days = (int)$difference->format("%r%a");
 
-    $days = $today->diff($expiry)->days;
-
-    if ($expiry < $today) {
-
+    if ($days < 0) {
         $expired++;
-
     } elseif ($days <= 30) {
-
         $expiring++;
-
     } else {
-
         $active++;
     }
 }
@@ -314,7 +312,10 @@ while ($row = $result->fetch_assoc()) {
             <span>WarrantyVault</span>
         </a>
         <div class="nav-links">
-            <span style="font-size: 0.875rem; color: var(--slate-500);">
+            <a href="dashboard.php" class="nav-link active">Dashboard</a>
+            <a href="products.php" class="nav-link">My Products</a>
+            <a href="add_product.php" class="nav-link">+ Add Product</a>
+            <span style="font-size: 0.875rem; color: var(--slate-500); margin: 0 4px;">
                 Welcome, <strong style="color: var(--slate-800);"><?php echo htmlspecialchars($_SESSION["user_name"] ?? 'User'); ?></strong>
             </span>
             <a href="logout.php" class="nav-link nav-logout">Logout</a>
@@ -341,7 +342,7 @@ while ($row = $result->fetch_assoc()) {
 
     <div class="cards-grid">
 
-        <div class="card">
+        <a href="products.php" class="card" style="text-decoration: none; color: inherit;">
             <div class="card-top">
                 <span class="card-label">Total Products</span>
                 <span class="card-dot dot-total"></span>
@@ -349,10 +350,10 @@ while ($row = $result->fetch_assoc()) {
             <div class="number">
                 <?php echo $total; ?>
             </div>
-            <div class="card-subtext">Total tracked items</div>
-        </div>
+            <div class="card-subtext">Total tracked items &rarr;</div>
+        </a>
 
-        <div class="card">
+        <a href="products.php" class="card" style="text-decoration: none; color: inherit;">
             <div class="card-top">
                 <span class="card-label">Active</span>
                 <span class="card-dot dot-active"></span>
@@ -360,10 +361,10 @@ while ($row = $result->fetch_assoc()) {
             <div class="number" style="color: var(--success);">
                 <?php echo $active; ?>
             </div>
-            <div class="card-subtext">Currently under warranty</div>
-        </div>
+            <div class="card-subtext">Currently under warranty &rarr;</div>
+        </a>
 
-        <div class="card">
+        <a href="products.php" class="card" style="text-decoration: none; color: inherit;">
             <div class="card-top">
                 <span class="card-label">Expiring Soon</span>
                 <span class="card-dot dot-expiring"></span>
@@ -371,10 +372,10 @@ while ($row = $result->fetch_assoc()) {
             <div class="number" style="color: var(--warning);">
                 <?php echo $expiring; ?>
             </div>
-            <div class="card-subtext">Within the next 30 days</div>
-        </div>
+            <div class="card-subtext">Within the next 30 days &rarr;</div>
+        </a>
 
-        <div class="card">
+        <a href="products.php" class="card" style="text-decoration: none; color: inherit;">
             <div class="card-top">
                 <span class="card-label">Expired</span>
                 <span class="card-dot dot-expired"></span>
@@ -382,8 +383,8 @@ while ($row = $result->fetch_assoc()) {
             <div class="number" style="color: var(--danger);">
                 <?php echo $expired; ?>
             </div>
-            <div class="card-subtext">Coverage has ended</div>
-        </div>
+            <div class="card-subtext">Coverage has ended &rarr;</div>
+        </a>
 
     </div>
 

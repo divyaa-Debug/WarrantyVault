@@ -1,33 +1,45 @@
 <?php
 
+session_start();
+
+if (isset($_SESSION["user_id"])) {
+    header("Location: dashboard.php");
+    exit();
+}
+
 include "config/db.php";
 
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $name = $_POST["name"];
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+    $name = trim($_POST["name"] ?? "");
+    $email = trim($_POST["email"] ?? "");
+    $password = $_POST["password"] ?? "";
 
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    $sql = "INSERT INTO users (name, email, password)
-            VALUES (?, ?, ?)";
-
-    $stmt = $conn->prepare($sql);
-
-    $stmt->bind_param("sss", $name, $email, $hashed_password);
-
-    if ($stmt->execute()) {
-
-        header("Location: login.php");
-        exit();
-
+    if (empty($name) || empty($email) || empty($password)) {
+        $message = "All fields are required.";
     } else {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        $message = "Email already exists.";
+        $sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sss", $name, $email, $hashed_password);
 
+        try {
+            if ($stmt->execute()) {
+                header("Location: login.php?registered=1");
+                exit();
+            } else {
+                $message = "Email already exists.";
+            }
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) {
+                $message = "An account with this email already exists.";
+            } else {
+                $message = "Registration error: " . htmlspecialchars($e->getMessage());
+            }
+        }
     }
 }
 

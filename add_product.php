@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $date = new DateTime($purchase_date);
 
-    $date->modify("+".$warranty_duration." year");
+    $date->modify("+" . $warranty_duration . " year");
 
     $expiry_date = $date->format("Y-m-d");
 
@@ -82,6 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,7 +109,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             --radius-lg: 12px;
         }
 
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -403,185 +406,140 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
 
-<nav class="navbar">
-    <div class="nav-container">
-        <a href="dashboard.php" class="brand">
-            <span>🔐</span>
-            <span>WarrantyVault</span>
-        </a>
-        <div class="nav-links">
-            <a href="dashboard.php" class="nav-link">Dashboard</a>
-            <a href="products.php" class="nav-link">My Products</a>
-            <a href="logout.php" class="nav-link nav-logout">Logout</a>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="dashboard.php" class="brand">
+                <span>🔐</span>
+                <span>WarrantyVault</span>
+            </a>
+            <div class="nav-links">
+                <a href="dashboard.php" class="nav-link">Dashboard</a>
+                <a href="products.php" class="nav-link">My Products</a>
+                <a href="add_product.php" class="nav-link active">+ Add Product</a>
+                <span style="font-size: 0.875rem; color: var(--slate-500); margin: 0 4px;">
+                    Welcome, <strong
+                        style="color: var(--slate-800);"><?php echo htmlspecialchars($_SESSION["user_name"] ?? 'User'); ?></strong>
+                </span>
+                <a href="logout.php" class="nav-link nav-logout">Logout</a>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<div class="page-wrapper">
+    <div class="page-wrapper">
 
-    <div class="breadcrumb">
-        <a href="dashboard.php" class="back-link">
-            ← Back to Dashboard
-        </a>
-    </div>
-
-    <div class="form-card">
-
-        <div class="card-header">
-            <h1 class="card-title">Add Product</h1>
-            <p class="card-subtitle">Enter product details to record coverage and calculate warranty expiration.</p>
+        <div class="breadcrumb">
+            <a href="dashboard.php" class="back-link">
+                ← Back to Dashboard
+            </a>
         </div>
 
-        <?php if (!empty($message)): ?>
-            <div class="alert alert-error">
-                <span>⚠</span>
-                <span><?php echo htmlspecialchars($message); ?></span>
-            </div>
-        <?php endif; ?>
+        <div class="form-card">
 
-        <form method="POST">
-
-            <div class="form-group">
-                <label class="form-label" for="product_name">
-                    Product Name <span class="required">*</span>
-                </label>
-                <input
-                    type="text"
-                    id="product_name"
-                    name="product_name"
-                    class="form-input"
-                    placeholder="e.g., iPhone 15 Pro, Samsung 55' OLED, MacBook Air"
-                    required
-                >
+            <div class="card-header">
+                <h1 class="card-title">Add Product</h1>
+                <p class="card-subtitle">Enter product details to record coverage and calculate warranty expiration.</p>
             </div>
 
-            <div class="form-grid-2">
-                <div class="form-group">
-                    <label class="form-label" for="category">Category</label>
-                    <select id="category" name="category" class="form-select">
-                        <option value="Electronics">Electronics</option>
-                        <option value="Appliance">Appliance</option>
-                        <option value="Mobile">Mobile</option>
-                        <option value="Laptop">Laptop</option>
-                        <option value="Other">Other</option>
-                    </select>
+            <?php if (!empty($message)): ?>
+                <div class="alert alert-error">
+                    <span>⚠</span>
+                    <span><?php echo htmlspecialchars($message); ?></span>
                 </div>
+            <?php endif; ?>
+
+            <form method="POST">
 
                 <div class="form-group">
-                    <label class="form-label" for="brand">Brand</label>
-                    <input
-                        type="text"
-                        id="brand"
-                        name="brand"
-                        class="form-input"
-                        placeholder="e.g., Apple, Sony, LG"
-                    >
-                </div>
-            </div>
-
-            <div class="form-grid-2">
-                <div class="form-group">
-                    <label class="form-label" for="model">Model</label>
-                    <input
-                        type="text"
-                        id="model"
-                        name="model"
-                        class="form-input"
-                        placeholder="e.g., A2848, OLED55C3"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="serial_number">Serial Number</label>
-                    <input
-                        type="text"
-                        id="serial_number"
-                        name="serial_number"
-                        class="form-input"
-                        placeholder="e.g., SN-88392019"
-                    >
-                </div>
-            </div>
-
-            <div class="form-grid-2">
-                <div class="form-group">
-                    <label class="form-label" for="purchase_date">
-                        Purchase Date <span class="required">*</span>
+                    <label class="form-label" for="product_name">
+                        Product Name <span class="required">*</span>
                     </label>
-                    <input
-                        type="date"
-                        id="purchase_date"
-                        name="purchase_date"
-                        class="form-input"
-                        required
-                    >
+                    <input type="text" id="product_name" name="product_name" class="form-input"
+                        placeholder="e.g ; iPhone 15 Pro" required>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="category">Category</label>
+                        <select id="category" name="category" class="form-select">
+                            <option value="Electronics">Electronics</option>
+                            <option value="Appliance">Appliance</option>
+                            <option value="Mobile">Mobile</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="brand">Brand</label>
+                        <input type="text" id="brand" name="brand" class="form-input"
+                            placeholder="e.g., Apple, Sony, LG">
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="model">Model</label>
+                        <input type="text" id="model" name="model" class="form-input" placeholder="e.g., A2848">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="serial_number">Serial Number</label>
+                        <input type="text" id="serial_number" name="serial_number" class="form-input"
+                            placeholder="e.g., SN-88392019">
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="purchase_date">
+                            Purchase Date <span class="required">*</span>
+                        </label>
+                        <input type="date" id="purchase_date" name="purchase_date" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="warranty_duration">
+                            Warranty Duration (Years) <span class="required">*</span>
+                        </label>
+                        <input type="number" id="warranty_duration" name="warranty_duration" class="form-input" min="1"
+                            placeholder="e.g., 1 or 2" required>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="price">Price</label>
+                        <input type="number" id="price" name="price" class="form-input" step="0.01" placeholder="0.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="store_name">Store Name</label>
+                        <input type="text" id="store_name" name="store_name" class="form-input"
+                            placeholder="e.g., Amazon, Apple Store">
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="warranty_duration">
-                        Warranty Duration (Years) <span class="required">*</span>
-                    </label>
-                    <input
-                        type="number"
-                        id="warranty_duration"
-                        name="warranty_duration"
-                        class="form-input"
-                        min="1"
-                        placeholder="e.g., 1 or 2"
-                        required
-                    >
-                </div>
-            </div>
-
-            <div class="form-grid-2">
-                <div class="form-group">
-                    <label class="form-label" for="price">Price</label>
-                    <input
-                        type="number"
-                        id="price"
-                        name="price"
-                        class="form-input"
-                        step="0.01"
-                        placeholder="0.00"
-                    >
+                    <label class="form-label" for="notes">Notes</label>
+                    <textarea id="notes" name="notes" class="form-textarea"
+                        placeholder="Add any coverage terms, invoice details, or additional notes..."></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="store_name">Store Name</label>
-                    <input
-                        type="text"
-                        id="store_name"
-                        name="store_name"
-                        class="form-input"
-                        placeholder="e.g., Amazon, Best Buy, Apple Store"
-                    >
+                <div class="form-actions">
+                    <a href="dashboard.php" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        Save Product
+                    </button>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label class="form-label" for="notes">Notes</label>
-                <textarea
-                    id="notes"
-                    name="notes"
-                    class="form-textarea"
-                    placeholder="Add any coverage terms, invoice details, or additional notes..."
-                ></textarea>
-            </div>
+            </form>
 
-            <div class="form-actions">
-                <a href="dashboard.php" class="btn btn-secondary">
-                    Cancel
-                </a>
-                <button type="submit" class="btn btn-primary">
-                    Save Product
-                </button>
-            </div>
-
-        </form>
+        </div>
 
     </div>
-
-</div>
 
 </body>
+
 </html>

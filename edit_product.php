@@ -419,6 +419,10 @@ $categories = ["Electronics", "Appliance", "Mobile", "Laptop", "Other"];
         <div class="nav-links">
             <a href="dashboard.php" class="nav-link">Dashboard</a>
             <a href="products.php" class="nav-link">My Products</a>
+            <a href="add_product.php" class="nav-link">+ Add Product</a>
+            <span style="font-size: 0.875rem; color: var(--slate-500); margin: 0 4px;">
+                Welcome, <strong style="color: var(--slate-800);"><?php echo htmlspecialchars($_SESSION["user_name"] ?? 'User'); ?></strong>
+            </span>
             <a href="logout.php" class="nav-link nav-logout">Logout</a>
         </div>
     </div>

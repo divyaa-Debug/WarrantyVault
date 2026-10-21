@@ -2,47 +2,53 @@
 
 session_start();
 
+if (isset($_SESSION["user_id"])) {
+    header("Location: dashboard.php");
+    exit();
+}
+
 include "config/db.php";
 
 $message = "";
+$success_message = "";
+
+if (isset($_GET["registered"])) {
+    $success_message = "Account created successfully! Please sign in.";
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+    $email = trim($_POST["email"] ?? "");
+    $password = $_POST["password"] ?? "";
 
-    $sql = "SELECT * FROM users WHERE email = ?";
-
-    $stmt = $conn->prepare($sql);
-
-    $stmt->bind_param("s", $email);
-
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-
-    if ($result->num_rows == 1) {
-
-        $user = $result->fetch_assoc();
-
-        if (password_verify($password, $user["password"])) {
-
-            $_SESSION["user_id"] = $user["id"];
-            $_SESSION["user_name"] = $user["name"];
-
-            header("Location: dashboard.php");
-            exit();
-
-        } else {
-
-            $message = "Incorrect password.";
-
-        }
-
+    if (empty($email) || empty($password)) {
+        $message = "Please enter both email and password.";
     } else {
+        try {
+            $sql = "SELECT * FROM users WHERE email = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-        $message = "Account not found.";
+            if ($result->num_rows == 1) {
+                $user = $result->fetch_assoc();
 
+                if (password_verify($password, $user["password"])) {
+                    $_SESSION["user_id"] = $user["id"];
+                    $_SESSION["user_name"] = $user["name"];
+
+                    header("Location: dashboard.php");
+                    exit();
+                } else {
+                    $message = "Incorrect password.";
+                }
+            } else {
+                $message = "No account found with that email address.";
+            }
+        } catch (mysqli_sql_exception $e) {
+            $message = "Login error: " . htmlspecialchars($e->getMessage());
+        }
     }
 }
 
@@ -144,6 +150,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: var(--danger);
         }
 
+        .alert-success {
+            background-color: #f0fdf4;
+            border-color: #bbf7d0;
+            color: #16a34a;
+        }
+
         .form-group {
             margin-bottom: 16px;
         }
@@ -224,6 +236,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1 class="auth-title">Welcome back</h1>
         <p class="auth-subtitle">Sign in to access your warranty vault</p>
     </div>
+
+    <?php if (!empty($success_message)): ?>
+        <div class="alert alert-success">
+            <span>✓</span>
+            <span><?php echo htmlspecialchars($success_message); ?></span>
+        </div>
+    <?php endif; ?>
 
     <?php if (!empty($message)): ?>
         <div class="alert">

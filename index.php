@@ -60,41 +60,35 @@
         }
 
         .hero {
-            max-width: 840px;
-            margin: 80px auto;
+            max-width: 1040px;
+            margin: 48px auto 72px;
             padding: 0 24px;
             text-align: center;
             flex: 1;
         }
 
-        .pill-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background-color: #eff6ff;
-            color: #1d4ed8;
-            border: 1px solid #bfdbfe;
-            padding: 6px 14px;
-            border-radius: 9999px;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            margin-bottom: 24px;
-        }
 
-        .hero-title {
-            font-size: 2.75rem;
+
+        .unique-title {
+            font-size: 3rem;
             font-weight: 800;
             color: var(--slate-900);
-            line-height: 1.2;
-            letter-spacing: -0.03em;
-            margin-bottom: 18px;
+            line-height: 1.15;
+            letter-spacing: -0.035em;
+            margin-bottom: 16px;
         }
 
-        .hero-desc {
+        .gradient-text {
+            background: linear-gradient(135deg, #1d4ed8 0%, #0284c7 60%, #0d9488 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .unique-subtitle {
             font-size: 1.125rem;
             color: var(--slate-500);
-            max-width: 580px;
-            margin: 0 auto 36px;
+            max-width: 620px;
+            margin: 0 auto 32px;
             line-height: 1.6;
         }
 
@@ -216,23 +210,21 @@
 </nav>
 
 <main class="hero">
-    <div class="pill-badge">
-        <span>🛡️</span>
-        <span>Secure Warranty Management</span>
-    </div>
 
-    <h1 class="hero-title">
-        Never lose track of your product warranties again
+
+    <h1 class="unique-title">
+        All Your Warranties. <br><span class="gradient-text">One Digital Vault.</span>
     </h1>
 
-    <p class="hero-desc">
-        Store receipts, monitor expiration dates, and safeguard purchase details in one centralized, clean vault.
+    <p class="unique-subtitle">
+        Never let another receipt fade or a warranty lapse. Store purchase records, track expiry dates in real time, and protect your investments seamlessly.
     </p>
 
     <div class="hero-cta">
-        <a href="register.php" class="btn btn-primary">Create Free Account</a>
-        <a href="login.php" class="btn btn-secondary">Sign In</a>
+        <a href="register.php" class="btn btn-primary btn-glow">Create Free Account →</a>
+        <a href="login.php" class="btn btn-secondary">Sign In to Vault</a>
     </div>
+
 
     <div class="features-grid">
         <div class="feature-card">
