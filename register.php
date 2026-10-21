@@ -237,7 +237,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 id="name"
                 name="name"
                 class="form-input"
-                placeholder="e.g., Jane Doe"
+                placeholder="Enter your name"
                 required
             >
         </div>
